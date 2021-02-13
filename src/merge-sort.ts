@@ -20,7 +20,7 @@ export default function sort(arr: number[]) {
 
       // 左側の配列、右側の配列、結果の配列のそれぞれのインデックス
       let l = 0, r = 0, j = 0;
-      do {
+      while (true) {
         const left = arr[i + l];
         const right = arr[i + width + r];
 
@@ -32,15 +32,20 @@ export default function sort(arr: number[]) {
           merged[j] = right;
           r++;
         }
-        j++;
-      } while (l < width && r < rwidth);
 
-      // 残りの値を格納する
-      for (; l < width; l++, j++) {
-        merged[j] = arr[i + l];
-      }
-      for (; r < rwidth; r++, j++) {
-        merged[j] = arr[i + width + r];
+        j++;
+
+        if (l == width) {
+          for (; r < rwidth; r++, j++) {
+            merged[j] = arr[i + width + r];
+          }
+          break;
+        } else if (r == rwidth) {
+          for (; l < width; l++, j++) {
+            merged[j] = arr[i + l];
+          }
+          break;
+        }
       }
 
       // 結果の配列を元の配列に反映させる
