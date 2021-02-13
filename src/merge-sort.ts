@@ -50,20 +50,3 @@ export default function sort(arr: number[]) {
     }
   }
 }
-
-function shuffleArray(array: number[]) {
-  for (var i = array.length - 1; i > 0; i--) {
-      var j = Math.floor(Math.random() * (i + 1));
-      var temp = array[i];
-      array[i] = array[j];
-      array[j] = temp;
-  }
-}
-
-const data: number[] = Array.from({ length: 100 }, (_, i) => i);
-shuffleArray(data);
-
-console.log(data);
-sort(data);
-
-console.log(data);
