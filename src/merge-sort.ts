@@ -3,7 +3,7 @@ export default function sort(arr: number[]) {
   let merged = new Array<number>(Math.ceil(arr.length / 2));
   let width = 1;
   while (width < arr.length) {
-    for (let i = 0; i + (width * 2) < arr.length; i += width) {
+    for (let i = 0; i + width < arr.length; i += width * 2) {
       let l = i;
       let r = i + width;
 
