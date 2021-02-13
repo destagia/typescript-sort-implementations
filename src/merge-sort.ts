@@ -1,40 +1,69 @@
 
+/**
+ * マージソート（破壊的）
+ * @param arr 
+ */
 export default function sort(arr: number[]) {
+  // マージした結果を保持するための配列
+  // マージは最大で配列の半分の長さになる
   let merged = new Array<number>(Math.ceil(arr.length / 2));
-  let width = 1;
-  while (width < arr.length) {
-    for (let i = 0; i + width < arr.length; i += width * 2) {
-      let l = i;
-      let r = i + width;
 
-      let j = 0;
+  // マージ結果の幅
+  let width = 1;
+
+  // マージの幅が配列の長さを超えるまでつづける
+  for (; width < arr.length; width *= 2) {
+    // 左から順に幅に従ってマージをすすめる
+    for (let i = 0; i + width < arr.length; i += width * 2) {
+      // マージの右側の配列は元の配列の幅を超えてしまう場合があるので計算する
+      const rwidth = i + width * 2 <= arr.length ? width : arr.length - i - width;
+
+      // 左側の配列、右側の配列、結果の配列のそれぞれのインデックス
+      let l = 0, r = 0, j = 0;
       do {
-        if (arr[l] < arr[r]) {
-          merged[j] = arr[l];
+        const left = arr[i + l];
+        const right = arr[i + width + r];
+
+        // 小さい順に入れていく
+        if (left < right) {
+          merged[j] = left;
           l++;
         } else {
-          merged[j] = arr[r];
+          merged[j] = right;
           r++;
         }
         j++;
-      } while (l - i < width && r - i < width * 2);
+      } while (l < width && r < rwidth);
 
-      for (; l - i < width; l++, j++) {
-        merged[j] = arr[l];
+      // 残りの値を格納する
+      for (; l < width; l++, j++) {
+        merged[j] = arr[i + l];
       }
-      for (; r - i < width * 2; r++, j++) {
-        merged[j] = arr[r];
+      for (; r < rwidth; r++, j++) {
+        merged[j] = arr[i + width + r];
       }
 
-      console.log(merged.slice(0, width * 2));
-      for (let k = 0; k < width * 2; k++) {
+      // 結果の配列を元の配列に反映させる
+      for (let k = 0; k < width + rwidth; k++) {
         arr[i + k] = merged[k];
       }
     }
-    width *= 2;
   }
 }
 
-const arr = [1, 2, 7, 3, 9, 5, 4, 6];
-sort(arr);
-console.log(arr);
+function shuffleArray(array: number[]) {
+  for (var i = array.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var temp = array[i];
+      array[i] = array[j];
+      array[j] = temp;
+  }
+}
+
+const data: number[] = Array.from({ length: 100 }, (_, i) => i);
+shuffleArray(data);
+
+console.log(data);
+sort(data);
+
+console.log(data);
